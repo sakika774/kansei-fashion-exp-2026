@@ -1,73 +1,99 @@
-# React + TypeScript + Vite
+# kansei-fashion-exp-2026
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+感性工学研究のための主観評価実験用Webアプリケーション（ファッション領域）
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 概要
 
-## React Compiler
+本プロジェクトは、  
+**ファッション画像を刺激とし、複数の印象評価尺度を用いた主観評価実験をWeb上で実施するための研究用アプリケーション**である。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+卒業論文・研究用途での実験実施を主目的とし、  
+実験設計の正確性、再現性、将来的な拡張性を重視して設計している。
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 目的
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- 感性工学研究における主観評価実験をWeb上で安定して実施する
+- 実験条件・評価尺度をコードとして明示的に管理する
+- 後から条件変更・別実験への流用が可能な構成を作る
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 使用技術
+
+- フロントエンド
+  - React
+  - TypeScript
+  - Vite
+- ルーティング
+  - react-router-dom（予定）
+- バックエンド / DB
+  - Supabase（予定）
+
+---
+
+## 実験設計の方針
+
+本アプリケーションでは、  
+**実験設計そのものを `experimentConfig.ts` に集約し、UIやロジックから分離する**方針を採用している。
+
+- 評価尺度の定義
+- 表示順
+- 入力形式
+- 必須条件
+
+などはすべて設定ファイルから制御し、  
+UI側では条件を直接ハードコードしない。
+
+これにより、
+
+- 実験条件の変更コスト削減
+- 研究的な透明性・再現性の向上
+- 別実験への流用
+
+を可能にする。
+
+---
+
+## 想定する実験フロー
+
+1. 実験説明
+2. 本試行
+   - 刺激提示（画像）
+   - 複数評価尺度による印象評価
+3. 完了画面
+
+※ 練習試行・注意チェックは将来的に拡張予定
+
+---
+
+## ディレクトリ構成（予定）
+
+```bash
+src/
+├── app/        # アプリ全体・ルーティング
+├── pages/      # 各ページ
+├── components/ # 再利用可能なUI部品
+├── config/     # 実験設計（experimentConfig）
+├── hooks/      # 実験進行・状態管理
+├── lib/        # 外部サービス（Supabaseなど）
+├── types/      # 型定義
+└── utils/      # 補助関数
+```
+---
+
+## 開発環境の起動
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 注意事項
+- 実験データや個人情報はリポジトリに含めない
+- 環境変数（APIキー等）は .env に管理する
+- 研究倫理・所属機関の指針に従って運用する
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
