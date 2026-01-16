@@ -1,6 +1,8 @@
 import { buildExperimentResult } from "../utils/buildExperimentResult";
 import { useExperimentState } from "../hooks/useExperimentState";
 import { experimentConfig } from "../config/experimentConfig";
+import { buildExperimentCsvRows } from "../utils/buildExperimentCsvRows";
+import { downloadCsv } from "../utils/downloadCsv";
 
 const ExperimentPage = () => {
   const {
@@ -28,6 +30,20 @@ const ExperimentPage = () => {
       setCurrentIndex(currentIndex + 1);
     }
   };
+
+  const handleComplete = () => {
+    const result = buildExperimentResult(
+      "test-participant",
+      results
+    );
+    const rows = buildExperimentCsvRows(result);
+
+    downloadCsv(
+      rows,
+      `experiment-result-${Date.now()}.csv`
+    );
+  };
+
 
   return (
     <div>
@@ -58,9 +74,21 @@ const ExperimentPage = () => {
         </div>
       ))}
 
-      <button onClick={handleNext} disabled={!isCurrentStimulusCompleted}>
-        次へ
-      </button>
+      {isLast ? (
+        <button
+          onClick={handleComplete}
+          disabled={!isCurrentStimulusCompleted}
+        >
+          完了（CSV保存）
+        </button>
+      ) : (
+        <button
+          onClick={handleNext}
+          disabled={!isCurrentStimulusCompleted}
+        >
+          次へ
+        </button>
+      )}
     </div>
   );
 };
