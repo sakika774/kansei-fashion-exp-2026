@@ -1,4 +1,4 @@
-import { ExperimentResult } from "../types/experimentResult";
+import type { ExperimentResult } from "../types/experimentResult";
 
 type StimulusRatings = {
   stimulusId: string;
