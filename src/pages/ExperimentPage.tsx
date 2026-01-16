@@ -1,3 +1,4 @@
+import { buildExperimentResult } from "../utils/buildExperimentResult";
 import { useExperimentState } from "../hooks/useExperimentState";
 import { experimentConfig } from "../config/experimentConfig";
 
@@ -9,6 +10,7 @@ const ExperimentPage = () => {
     isCurrentStimulusCompleted,
     currentIndex,
     setCurrentIndex,
+    results,
   } = useExperimentState();
 
   const isLast = currentIndex === experimentConfig.stimuli.length - 1;
@@ -17,7 +19,11 @@ const ExperimentPage = () => {
     if (!isCurrentStimulusCompleted) return;
 
     if (isLast) {
-      alert("実験完了（仮）");
+      const experimentResult = buildExperimentResult(
+        "test-participant",
+        results
+      );
+      console.log("Experiment Result:", experimentResult);
     } else {
       setCurrentIndex(currentIndex + 1);
     }
