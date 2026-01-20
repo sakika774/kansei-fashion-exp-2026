@@ -97,3 +97,17 @@ npm run dev
 - 環境変数（APIキー等）は .env に管理する
 - 研究倫理・所属機関の指針に従って運用する
 
+
+## Supabase Database Design
+
+### experiment_results
+
+- 1 row = 1 stimulus evaluation
+- Matches CSV export format
+
+| column | description |
+|------|-------------|
+| participant_id | 被験者ID |
+| stimulus_id | 刺激ID |
+| intellectual | 知的な |
+...
